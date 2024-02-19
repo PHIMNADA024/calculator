@@ -136,7 +136,7 @@ class CalculatorUI(tk.Tk):
             if self.equation.get():
                 pattern = r"\(([^)]+)\)!"
                 equation = re.sub(pattern, lambda match: f"factorial({match.group(1)})", self.equation.get())
-                eval(equation)
+                eval(equation.replace("^", "**"))
                 self.expression_field.config(disabledforeground="yellow")
         except Exception:
             self.expression_field.config(disabledforeground="red")
