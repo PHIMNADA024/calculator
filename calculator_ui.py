@@ -112,6 +112,7 @@ class CalculatorUI(tk.Tk):
 
     def handle_operator_key(self, key: str) -> None:
         """Handle key press for operator entry."""
+        self.last_equations.append(self.equation.get())
         last_char = self.equation.get()[-1] if self.equation.get() else ''
         if key in "()" or ((last_char.isnumeric() or not self.equation.get()) and key in "+-*/^."):
             self.equation.set(self.equation.get() + key)
