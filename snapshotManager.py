@@ -16,22 +16,26 @@ class SnapshotManager:
         """
         return self.__snapshots
 
-    def add_new_snapshot(self, equation: str, result: str) -> None:
+    def add_new_snapshot(self, equation: str, result: str, last_equation: list[str]) -> None:
         """Add a new snapshot to the list.
 
         :param equation: The equation for the snapshot.
         :param result: The result of the equation.
+        :param last_equation: The list of the last equations.
         """
-        new_snapshot = Snapshot(equation, result)
+        new_snapshot = Snapshot(equation, result, last_equation)
         self.__snapshots.append(new_snapshot)
 
-    def get_all_snapshot(self) -> list[str]:
+    def get_all_snapshot(self) -> list[tuple[str, list[str]]]:
         """Get all snapshots as a list of strings.
 
         :return: A list of strings representing the snapshots.
         """
         history_snapshots = []
         for snapshot in self.snapshots:
-            history_snapshots.append("=" + str(snapshot.result))
-            history_snapshots.append(snapshot.equation)
+            last_equations = []
+            for index in range(len(str(snapshot.result))):
+                last_equations.append(str(snapshot.result)[:index])
+            history_snapshots.append(("=" + str(snapshot.result), last_equations))
+            history_snapshots.append((snapshot.equation, snapshot.last_equations))
         return history_snapshots
