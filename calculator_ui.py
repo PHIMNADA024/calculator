@@ -87,14 +87,14 @@ class CalculatorUI(tk.Tk):
 
     def calculate_result(self) -> None:
         """Calculate the result of the equation."""
-        result = self.calculator.calculate(self.equation.get())
+        result = self.calculator.calculate(self.equation.get(), self.last_equations.copy())
         if result == "Error":
             playsound("warning_sound.mp3")
         self.equation.set(result)
         self.last_equations.clear()
-        for i in range(len(str(result))):
-            self.last_equations.append(str(result)[:i])
-        self.history["values"] = self.calculator.load_snapshot()
+        for index in range(len(str(result))):
+            self.last_equations.append(str(result)[:index])
+        self.history["values"] = [snapshot[0] for snapshot in self.calculator.load_snapshot()]
 
     def delete_last_entry(self) -> None:
         """Delete the last entry from the equation."""
@@ -146,9 +146,13 @@ class CalculatorUI(tk.Tk):
 
         :param history: The selected history item.
         """
+        histories = self.calculator.load_snapshot()
+        histories_values = [value[0] for value in histories]
+        self.last_equations = histories[histories_values.index(history)][1].copy()
         history = history.replace("=", "").strip()
         self.equation.set(history)
         self.history.set("history")
+        self.expression_field.config(disabledforeground="yellow")
 
     def run(self) -> None:
         """Run the calculator application."""
