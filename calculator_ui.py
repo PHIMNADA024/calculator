@@ -91,7 +91,9 @@ class CalculatorUI(tk.Tk):
         if result == "Error":
             playsound("warning_sound.mp3")
         self.equation.set(result)
-        self.last_equations = [result]
+        self.last_equations.clear()
+        for i in range(len(str(result))):
+            self.last_equations.append(str(result)[:i])
         self.history["values"] = self.calculator.load_snapshot()
 
     def delete_last_entry(self) -> None:
